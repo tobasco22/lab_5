@@ -25,6 +25,18 @@ int length(node* head)
 //  then toCString function wil return "abc"
 char* toCString(node* head)
 {
+	 int len = length(head);
+    char* str = (char*)malloc((len + 1) * sizeof(char));  // +1 for the null character
+    struct node* current = head;
+    int i = 0;
+    while (current != NULL)
+    {
+        str[i] = current->letter;
+        current = current->next;
+        i++;
+    }
+    str[i] = '\0';  // Terminate the string with a null character
+    return str;
 }
 
 // inserts character to the linkedlist
@@ -33,11 +45,31 @@ char* toCString(node* head)
 // head -> |a|->|b|->|c|->|x|
 void insertChar(node** pHead, char c)
 {
+	struct node* newNode = (struct node*)malloc(sizeof(struct node));
+    newNode->letter = c;
+    newNode->next = NULL;
+
+    if (*pHead == NULL) {
+        *pHead = newNode;
+    } else {
+        struct node* current = *pHead;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
 }
 
 // deletes all nodes in the linkedList.
 void deleteList(node** pHead)
 {
+	struct node* current = *pHead;
+    while (current != NULL) {
+        struct node* nextNode = current->next;
+        free(current);
+        current = nextNode;
+    }
+    *pHead = NULL;
 }
 
 int main(void)
